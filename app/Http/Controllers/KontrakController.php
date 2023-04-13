@@ -15,7 +15,11 @@ class KontrakController extends Controller
      */
     public function index()
     {
-        //
+        $kontrak = Kontrak::latest();
+        return [
+            "status" => 1,
+            "data" => $kontrak
+        ];
     }
 
     /**
@@ -36,7 +40,17 @@ class KontrakController extends Controller
      */
     public function store(StoreKontrakRequest $request)
     {
-        //
+        $request->validate([
+            'lama_kontrak' => 'required|max:255',
+            'gaji_per_bulan' => 'required'
+        ]);
+
+        $kontrak = Kontrak::create($request->all());
+
+        return [
+            "status" => 1,
+            "data" => $kontrak
+        ];
     }
 
     /**
@@ -47,7 +61,10 @@ class KontrakController extends Controller
      */
     public function show(Kontrak $kontrak)
     {
-        //
+        return [
+            "status" => 1,
+            "data" => $kontrak
+        ];
     }
 
     /**
@@ -70,7 +87,17 @@ class KontrakController extends Controller
      */
     public function update(UpdateKontrakRequest $request, Kontrak $kontrak)
     {
-        //
+        $request->validate([
+            'lama_kontrak' => 'required|max:255',
+            'gaji_per_bulan' => 'required'
+        ]);
+
+        $kontrak->update($request->all());
+
+        return [
+            "status" => 1,
+            "data" => $kontrak
+        ];
     }
 
     /**
@@ -81,6 +108,11 @@ class KontrakController extends Controller
      */
     public function destroy(Kontrak $kontrak)
     {
-        //
+        $kontrak->delete();
+        return[
+            "status" => 1,
+            "data" => $kontrak,
+            "msg" => "Kontrak sudah di hapus."
+        ];
     }
 }
