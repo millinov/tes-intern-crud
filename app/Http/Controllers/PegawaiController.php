@@ -15,7 +15,7 @@ class PegawaiController extends Controller
      */
     public function index()
     {
-        $pegawai = Pegawai::latest();
+        $pegawai = Pegawai::latest()->paginate(10);
         return [
             "status" => 1,
             "data" => $pegawai
