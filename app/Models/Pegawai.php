@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pegawai extends Model
 {
     use HasFactory;
+
+    protected $guarded =['id'];
+    protected $with =['jabatan','kontrak'];
 }
