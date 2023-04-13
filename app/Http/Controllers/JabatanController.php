@@ -15,7 +15,11 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        //
+        $jabatan = Jabatan::latest();
+        return [
+            "status" => 1,
+            "data" => $jabatan
+        ];
     }
 
     /**
@@ -36,7 +40,17 @@ class JabatanController extends Controller
      */
     public function store(StoreJabatanRequest $request)
     {
-        //
+        $request->validate([
+            'nama_jabatan' => 'required|max:255',
+            'description' => 'required'
+        ]);
+
+        $jabatan = Jabatan::create($request->all());
+
+        return [
+            "status" => 1,
+            "data" => $jabatan
+        ];
     }
 
     /**
@@ -47,7 +61,10 @@ class JabatanController extends Controller
      */
     public function show(Jabatan $jabatan)
     {
-        //
+        return [
+            "status" => 1,
+            "data" => $jabatan
+        ];
     }
 
     /**
@@ -70,7 +87,17 @@ class JabatanController extends Controller
      */
     public function update(UpdateJabatanRequest $request, Jabatan $jabatan)
     {
-        //
+        $request->validate([
+            'nama_jabatan' => 'required|max:255',
+            'description' => 'required'
+        ]);
+
+        $jabatan->update($request->all());
+
+        return [
+            "status" => 1,
+            "data" => $jabatan
+        ];
     }
 
     /**
@@ -81,6 +108,11 @@ class JabatanController extends Controller
      */
     public function destroy(Jabatan $jabatan)
     {
-        //
+        $jabatan->delete();
+        return[
+            "status" => 1,
+            "data" => $jabatan,
+            "msg" => "Jabatan sudah di hapus."
+        ];
     }
 }
