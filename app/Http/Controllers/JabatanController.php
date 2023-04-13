@@ -15,7 +15,7 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        $jabatan = Jabatan::latest();
+        $jabatan = Jabatan::all();
         return [
             "status" => 1,
             "data" => $jabatan

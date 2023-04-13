@@ -15,7 +15,7 @@ class KontrakController extends Controller
      */
     public function index()
     {
-        $kontrak = Kontrak::latest();
+        $kontrak = Kontrak::all();
         return [
             "status" => 1,
             "data" => $kontrak
