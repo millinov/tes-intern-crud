@@ -10,4 +10,9 @@ class Kontrak extends Model
     use HasFactory;
 
     protected $guarded =['id'];
+
+    public function pegawais()
+    {
+        return $this->hasMany(Pegawai::class);
+    }
 }

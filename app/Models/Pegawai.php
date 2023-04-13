@@ -11,4 +11,14 @@ class Pegawai extends Model
 
     protected $guarded =['id'];
     protected $with =['jabatan','kontrak'];
+
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class);
+    }
+
+    public function kontrak()
+    {
+        return $this->belongsTo(Kontrak::class);
+    }
 }
