@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('kontraks', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('lama_kontrak');
+            $table->string('gaji_per_bulan');
         });
     }
 
