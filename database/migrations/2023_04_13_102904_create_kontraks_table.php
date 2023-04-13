@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('lama_kontrak');
             $table->string('gaji_per_bulan');
+            $table->timestamps();
         });
     }
 
