@@ -15,7 +15,11 @@ class PegawaiController extends Controller
      */
     public function index()
     {
-        //
+        $pegawai = Pegawai::latest();
+        return [
+            "status" => 1,
+            "data" => $pegawai
+        ];
     }
 
     /**
@@ -36,7 +40,20 @@ class PegawaiController extends Controller
      */
     public function store(StorePegawaiRequest $request)
     {
-        //
+        $request->validate([
+            'nama_pegawai' => 'required|max:255',
+            'no_telp' => ['required','min:10','max:255','unique:App\Models\Pegawai'],
+            'email' => ['required','email:dns','unique:App\Models\Pegawai'],
+            'jabatan_id' => 'required',
+            'kontrak_id' => 'required',
+        ]);
+
+        $pegawai = Pegawai::create($request->all());
+
+        return [
+            "status" => 1,
+            "data" => $pegawai
+        ];
     }
 
     /**
@@ -47,7 +64,10 @@ class PegawaiController extends Controller
      */
     public function show(Pegawai $pegawai)
     {
-        //
+        return [
+            "status" => 1,
+            "data" => $pegawai
+        ];
     }
 
     /**
@@ -70,7 +90,20 @@ class PegawaiController extends Controller
      */
     public function update(UpdatePegawaiRequest $request, Pegawai $pegawai)
     {
-        //
+        $request->validate([
+            'nama_pegawai' => 'required|max:255',
+            'no_telp' => ['required','min:10','max:255','unique:App\Models\Pegawai'],
+            'email' => ['required','email:dns','unique:App\Models\Pegawai'],
+            'jabatan_id' => 'required',
+            'kontrak_id' => 'required',
+        ]);
+
+        $pegawai->update($request->all());
+
+        return [
+            "status" => 1,
+            "data" => $pegawai
+        ];
     }
 
     /**
@@ -81,6 +114,11 @@ class PegawaiController extends Controller
      */
     public function destroy(Pegawai $pegawai)
     {
-        //
+        $pegawai->delete();
+        return[
+            "status" => 1,
+            "data" => $pegawai,
+            "msg" => "Pegawai sudah di hapus."
+        ];
     }
 }
