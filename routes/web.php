@@ -14,5 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return 'Halaman Utama';
+    return view('main');
+});
+
+Route::get('/create', function () {
+    return view('');
+});
+
+Route::get('/edit', function () {
+    return view('');
 });
