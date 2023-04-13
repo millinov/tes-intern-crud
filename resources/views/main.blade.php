@@ -4,39 +4,33 @@
     <div>
         <div>
             <form action="" id="formPegawai" class="">
+                @csrf
                 <div class="mb-3 w-50">
-                    <label for="exampleFormControlInput1" class="form-label">Nama Pegawai</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="John Doe">
+                    <label for="pegawai" class="form-label">Nama Pegawai</label>
+                    <input type="text" class="form-control" id="pegawai" name="pegawai" placeholder="John Doe">
                 </div>
 
                 <div class="mb-3 w-50">
-                    <label for="exampleFormControlInput1" class="form-label">No. Telp</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="12345678">
+                    <label for="no_telp" class="form-label">No. Telp</label>
+                    <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="12345678">
                 </div>
 
                 <div class="mb-3 w-50">
-                    <label for="exampleFormControlInput1" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="email@example.com">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="email@example.com">
                 </div>
 
                 <div class="mb-3 w-50">
-                    <label for="exampleFormControlInput1" class="form-label">Jabatan</label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                        <option value="4">Four</option>
+                    <label for="jabatan" class="form-label">Jabatan</label>
+                    <select class="form-select" name="jabatan_id" id="jabatan_id" aria-label="Default select example">
+                        <option value="" selected>Jabatan</option>
                     </select>
                 </div>
 
                 <div class="mb-3 w-50">
-                    <label for="exampleFormControlInput1" class="form-label">Kontrak</label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <label for="kontrak" class="form-label">Kontrak</label>
+                    <select class="form-select" name="kontrak_id" id="kontrak_id" aria-label="Default select example">
+                        <option value="" selected>Pilih Kontrak</option>
                     </select>
                 </div>
 
@@ -93,9 +87,23 @@
                             table += "<td>"+dataKontrak[dataPegawai[i].kontrak_id-1].lama_kontrak+"</td>";
                             table += "</tr>";
                         }
+
+                        var opsi ="";
+                        var kontrak ="";
+
+                        for(let i = 0; i <dataJabatan.length; i++)
+                        {
+                            opsi += "<option value=\""+dataJabatan[i].id+"\">"+dataJabatan[i].nama_jabatan+"</option>";
+                        }
+
+                        for(let i = 0; i <dataKontrak.length; i++)
+                        {
+                            kontrak += "<option value=\""+dataKontrak[i].id+"\">"+dataKontrak[i].lama_kontrak+"</option>";
+                        }
                         
                         document.getElementById('content').innerHTML += table;
-
+                        document.getElementById('jabatan_id').innerHTML += opsi;
+                        document.getElementById('kontrak_id').innerHTML += kontrak;
                     })
                 })
 
