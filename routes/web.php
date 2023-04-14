@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('main');
+    return view('main',[
+        'app_url' => env('APP_URL','http://localhost')
+    ]);
 });
 
 Route::get('/create', function () {
