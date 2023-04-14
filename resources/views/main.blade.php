@@ -71,6 +71,14 @@
         $(document).ready(function(){
             loadData();
 
+            $('#kontrak_id').change(function(){
+                var data= $(this).val();          
+            });
+
+            $('#jabatan_id').change(function(){
+                var data= $(this).val();          
+            });
+
             $('#formPegawai').on('submit', function(e){
                 e.preventDefault();
                 $.ajax({
@@ -81,6 +89,7 @@
                         resetError();
                         resetForm();
                         loadData();
+                        alert("Pegawai berhasil di tambah/update!");
                     },
                     error: function(data) {
                         var errorMsg = data.responseJSON;
@@ -109,17 +118,11 @@
 
         function resetForm()
         {
-            $('#kontrak_id').change(function(){
-                var data= $(this).val();          
-            });
-
-            $('#jabatan_id').change(function(){
-                var data= $(this).val();          
-            });
-
             $('[type=text]').val('');
             $('#kontrak_id').val('1').trigger('change');
             $('#jabatan_id').val('1').trigger('change');
+            $('#formPegawai').attr('action','{{ $app_url }}/api/pegawai')
+            $('#formPegawai').attr('method','post')
         }
         
 
@@ -145,6 +148,7 @@
                             table += "<td>"+dataPegawai[i].email+"</td>";
                             table += "<td>"+dataJabatan[dataPegawai[i].jabatan_id-1].nama_jabatan+"</td>";
                             table += "<td>"+dataKontrak[dataPegawai[i].kontrak_id-1].lama_kontrak+"</td>";
+                            table += "<td>"+"<button class=\"updatePegawai\" data-id=\""+dataPegawai[i].id+"\">Update</button>"+"</td>";
                             table += "<td>"+"<button class=\"deletePegawai\" data-id=\""+dataPegawai[i].id+"\">Delete</button>"+"</td>";
                             table += "</tr>";
                         }
@@ -167,6 +171,7 @@
                         document.getElementById('kontrak_id').innerHTML = kontrak;
 
                         $('.deletePegawai').click(function(e){
+                            e.preventDefault();
                             var id = $(this).data("id");
                             $.ajax({
                                 type:'DELETE',
@@ -181,6 +186,17 @@
                                 }
 
                             });
+                        });
+                        $('.updatePegawai').click(function(e){
+                            e.preventDefault();
+                            var id = $(this).data("id");
+                            $('[name=nama_pegawai]').val(dataPegawai[id-1].nama_pegawai);
+                            $('[name=no_telp]').val(dataPegawai[id-1].no_telp);
+                            $('[name=email]').val(dataPegawai[id-1].email);
+                            $('#kontrak_id').val(dataPegawai[id-1].kontrak_id).trigger('change');
+                            $('#jabatan_id').val(dataPegawai[id-1].jabatan_id).trigger('change');
+                            $('#formPegawai').attr('action','{{ $app_url }}/api/pegawai/'+id)
+                            $('#formPegawai').attr('method','PUT')
                         });
                     })
                 })
