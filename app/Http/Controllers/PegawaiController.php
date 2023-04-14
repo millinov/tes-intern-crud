@@ -90,13 +90,23 @@ class PegawaiController extends Controller
      */
     public function update(UpdatePegawaiRequest $request, Pegawai $pegawai)
     {
-        $request->validate([
+        $rules = [
             'nama_pegawai' => 'required|max:255',
-            'no_telp' => ['required','min:10','max:255','unique:App\Models\Pegawai'],
-            'email' => ['required','email:dns','unique:App\Models\Pegawai'],
             'jabatan_id' => 'required',
             'kontrak_id' => 'required',
-        ]);
+        ];
+
+        if($request->no_telp != $pegawai->no_telp)
+        {
+            $rules['no_telp'] = ['required','min:10','max:255','unique:App\Models\Pegawai'];
+        }
+
+        if($request->email != $pegawai->email)
+        {
+            $rules['email'] = ['required','email:dns','unique:App\Models\Pegawai'];
+        }
+
+        $request->validate($rules);
 
         $pegawai->update($request->all());
 
