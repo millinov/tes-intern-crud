@@ -29,7 +29,6 @@
                 <div class="mb-3 w-50">
                     <label for="jabatan" class="form-label">Jabatan</label>
                     <select class="form-select" name="jabatan_id" id="jabatan_id" aria-label="Default select example" required>
-                        <option value="" selected>Jabatan</option>
                     </select>
                     <div class="text-danger mb-2" name="jabatan_id_error" id="jabatan_id_error">
                     </div>
@@ -38,7 +37,7 @@
                 <div class="mb-3 w-50">
                     <label for="kontrak" class="form-label">Kontrak</label>
                     <select class="form-select" name="kontrak_id" id="kontrak_id" aria-label="Default select example" required>
-                        <option value="" selected>Pilih Kontrak</option>
+                        
                     </select>
                     <div class="text-danger mb-2" name="kontrak_id_error" id="kontrak_id_error">
                     </div>
@@ -50,14 +49,19 @@
 
         <hr/>
 
-        <table id="content">
-            <tr>
-                <td class="ms-10"><b>Nama Pegawai</b></td>
-                <td class="ms-10"><b>No. Telp</b></td>
-                <td class="ms-10"><b>Email</b></td>
-                <td class="ms-10"><b>Jabatan</b></td>
-                <td class="ms-10"><b>Kontrak</b></td>
-            </tr>
+        <table>
+            <thead>
+                <tr>
+                    <th class="ml-5"><b>Nama Pegawai</b></th>
+                    <th class="ml-5"><b>No. Telp</b></th>
+                    <th class="ml-5"><b>Email</b></th>
+                    <th class="ml-5"><b>Jabatan</b></th>
+                    <th class="ml-5"><b>Kontrak</b></th>
+                </tr>
+            </thead>
+            <tbody id="content">
+
+            </tbody>
         </table>
 
     </div>
@@ -76,14 +80,10 @@
                     success: function (textStatus, status) {
                         resetError();
                         resetForm();
-                        console.log(textStatus);
-                        console.log(status);
                         loadData();
                     },
                     error: function(data) {
                         var errorMsg = data.responseJSON;
-                        console.log(errorMsg);
-
                         var errorHtml = "";
                         resetError();
 
@@ -125,19 +125,17 @@
 
         function loadData()
         {
-            var table = document.createElement('table');
-            var tableBody = document.createElement('tbody');
 
             $.get('{{ $app_url }}/api/pegawai',function(data){
                 var dataPegawai = JSON.parse(JSON.stringify(data)).data;
-
-                var table = "";
 
                 $.get('{{ $app_url }}/api/jabatan',function(data1){
                     var dataJabatan = JSON.parse(JSON.stringify(data1)).data;
 
                     $.get('{{ $app_url }}/api/kontrak',function(data2){
-                        var dataKontrak = JSON.parse(JSON.stringify(data2)).data;
+                        var dataKontrak = JSON.parse(JSON.stringify(data2)).data;    
+                        var table = "";
+                        var tableBody = document.createElement('tbody');
 
                         for(let i=0; i<dataPegawai.length; i++)
                         {
@@ -147,11 +145,12 @@
                             table += "<td>"+dataPegawai[i].email+"</td>";
                             table += "<td>"+dataJabatan[dataPegawai[i].jabatan_id-1].nama_jabatan+"</td>";
                             table += "<td>"+dataKontrak[dataPegawai[i].kontrak_id-1].lama_kontrak+"</td>";
+                            table += "<td>"+"<button class=\"deletePegawai\" data-id=\""+dataPegawai[i].id+"\">Delete</button>"+"</td>";
                             table += "</tr>";
                         }
 
-                        var opsi ="";
-                        var kontrak ="";
+                        var opsi ="<option value=\"\" selected>Jabatan</option>";
+                        var kontrak ="<option value=\"\" selected>Pilih Kontrak</option>";
 
                         for(let i = 0; i <dataJabatan.length; i++)
                         {
@@ -163,9 +162,26 @@
                             kontrak += "<option value=\""+dataKontrak[i].id+"\">"+dataKontrak[i].lama_kontrak+"</option>";
                         }
                         
-                        document.getElementById('content').innerHTML += table;
+                        document.getElementById('content').innerHTML = table;
                         document.getElementById('jabatan_id').innerHTML = opsi;
                         document.getElementById('kontrak_id').innerHTML = kontrak;
+
+                        $('.deletePegawai').click(function(e){
+                            var id = $(this).data("id");
+                            $.ajax({
+                                type:'DELETE',
+                                url:'{{ $app_url }}/api/pegawai/'+id,
+                                success: function (data, status) {
+                                    loadData();
+                                    alert("Pegawai sudah di hapus");
+                                },
+                                error: function(data) {
+                                    var errors = data.responseJSON;
+                                    console.log(errors);
+                                }
+
+                            });
+                        });
                     })
                 })
 
@@ -181,6 +197,8 @@
                 // }
 
             });
+
+            
         }
     </script>
 @endsection
